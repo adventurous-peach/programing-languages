@@ -75,3 +75,14 @@ fun dates_in_months(x: (int * int * int) list, m: int list) =
   if null m
   then []
   else dates_in_month(x, hd m) @ dates_in_months(x, tl m)
+
+(* string list * int -> string
+* Return the nth element of a given list of strings (1-indexed)
+* get_nth(["a", "b", "c", "d", "e"], 5) = "e"
+* get_nth(["a", "b", "c", "d", "e"], 3) = "c"
+* get_nth(["a", "b", "c", "d", "e"], 1) = "a"
+*)
+fun get_nth(x: string list, n: int) =
+  if n = 1
+  then hd x
+  else get_nth(tl x, n - 1)
