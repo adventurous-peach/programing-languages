@@ -63,3 +63,15 @@ fun dates_in_month(x: (int * int * int) list , m: int) =
   else if #2 (hd x) = m
        then hd x :: dates_in_month(tl x, m)
        else dates_in_month(tl x, m)
+
+(* Date list * int list -> Date list
+* Filter a given list of Dates keeping only the Dates that happened in any m of a given list
+* dates_in_months([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], [5, 3]) = [(12, 5, 23)]
+* dates_in_months([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], [6, 12, 7]) = []
+* dates_in_months([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], [4, 5]) = [(3, 4, 30), (12, 5, 23)]
+* dates_in_months([], [12, 4, 5, 2]) = []
+*)
+fun dates_in_months(x: (int * int * int) list, m: int list) =
+  if null m
+  then []
+  else dates_in_month(x, hd m) @ dates_in_months(x, tl m)
