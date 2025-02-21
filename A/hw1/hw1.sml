@@ -21,3 +21,18 @@ fun is_older(d1: int * int * int, d2: int * int* int) =
   else if #2 d1 <> #2 d2
        then #2 d1 < #2 d2
        else #3 d1 < #3 d2
+
+(*
+* Date list * int -> int
+* Count how many Dates in a given list happened in m
+* number_in_month([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], 5) = 1
+* number_in_month([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], 6) = 0
+* number_in_month([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], 2) = 2
+* number_in_month([], 12) = 0
+*)
+fun number_in_month(x: (int * int * int) list, m: int) =
+  if null x
+  then 0
+  else if #2 (hd x) = m
+       then 1 + number_in_month(tl x, m)
+       else number_in_month(tl x, m)
