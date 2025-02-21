@@ -38,3 +38,8 @@ val t25 = get_nth(["a", "b", "c", "d", "e"], 1) = "a"
 val t26 = date_to_string(2000, 6, 8) = "June 8, 2000"
 val t27 = date_to_string(1996, 8, 1) = "August 1, 1996"
 val t28 = date_to_string(2025, 2, 24) = "February 24, 2025"
+
+val t29 = number_before_reaching_sum(4, [4, 3, 5]) = 0
+val t30 = number_before_reaching_sum(7, [4, 3, 5]) = 1
+val t31 = number_before_reaching_sum(8, [4, 3, 5]) = 2
+val t32 = (number_before_reaching_sum(8, [1, 1, 1]) handle NoMoreElements => 0) = 0

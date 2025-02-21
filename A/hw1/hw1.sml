@@ -99,3 +99,25 @@ fun date_to_string(d: int * int * int) =
     val m = ["January", "February", "March", "April", "May", "June", "July",
              "August", "September", "October", "November", "December"]
   in get_nth(m, #2 d) ^ " " ^ Int.toString(#3 d) ^ ", " ^ Int.toString(#1 d) end
+
+(*
+* int * int list -> int
+* Count how many of the first elements of a given list of int add up to less than sum
+* number_before_reaching_sum(4, [4, 3, 5]) = 0
+* number_before_reaching_sum(7, [4, 3, 5]) = 1
+* number_before_reaching_sum(8, [4, 3, 5]) = 2
+* number_before_reaching_sum(8, [1, 1, 1]) = raise NoMoreElements
+*)
+fun number_before_reaching_sum(sum: int, x: int list) =
+  let
+    exception NoMoreElements
+    fun helper_fun(y: int list, acc: int, elem: int) =
+      if null y
+      then raise NoMoreElements
+      else let
+             val acc = acc + hd y
+           in 
+             if acc >= sum
+             then elem
+             else helper_fun(tl y, acc, elem + 1) end 
+  in helper_fun(x, 0, 0) end
