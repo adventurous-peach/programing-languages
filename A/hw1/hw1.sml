@@ -49,3 +49,17 @@ fun number_in_months(x: (int * int * int) list, m: int list) =
   if null m
   then 0
   else number_in_month(x, hd m) + number_in_months(x, tl m)
+
+(* Date list * int -> Date list
+* Filter a given list of Dates keeping only the Dates that happened in m
+* dates_in_month([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], 5) = [(12, 5, 23)]
+* dates_in_month([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], 6) = []
+* dates_in_month([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], 2) = [(1, 2, 3), (3, 2, 24)]
+* dates_in_month([], 12) = []
+*)
+fun dates_in_month(x: (int * int * int) list , m: int) =
+  if null x
+  then []
+  else if #2 (hd x) = m
+       then hd x :: dates_in_month(tl x, m)
+       else dates_in_month(tl x, m)
