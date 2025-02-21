@@ -43,3 +43,8 @@ val t29 = number_before_reaching_sum(4, [4, 3, 5]) = 0
 val t30 = number_before_reaching_sum(7, [4, 3, 5]) = 1
 val t31 = number_before_reaching_sum(8, [4, 3, 5]) = 2
 val t32 = (number_before_reaching_sum(8, [1, 1, 1]) handle NoMoreElements => 0) = 0
+
+val t33 = what_month(1) = 1
+val t34 = what_month(31) = 1
+val t35 = what_month(50) = 2
+val t36 = what_month(365) = 12

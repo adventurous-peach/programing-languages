@@ -121,3 +121,16 @@ fun number_before_reaching_sum(sum: int, x: int list) =
              then elem
              else helper_fun(tl y, acc, elem + 1) end 
   in helper_fun(x, 0, 0) end
+
+(*
+* int -> int
+* Return what month a given day (out of the 365) is in
+* what_month(1) = 1
+* what_month(31) = 1
+* what_month(50) = 2
+* what_month(365) = 12
+*)
+fun what_month(d: int) =
+  let 
+    val m = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  in number_before_reaching_sum(d, m) + 1 end
