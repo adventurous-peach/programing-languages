@@ -36,3 +36,16 @@ fun number_in_month(x: (int * int * int) list, m: int) =
   else if #2 (hd x) = m
        then 1 + number_in_month(tl x, m)
        else number_in_month(tl x, m)
+
+(*
+* Date list * int list -> int
+* Count how many Dates in a given list happened in any of the m in the given list
+* number_in_months([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], [5, 3]) = 1
+* number_in_months([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], [6, 12, 7]) = 0
+* number_in_months([(1, 2, 3), (3, 4, 30), (3, 2, 24), (12, 5, 23), (3, 9, 27)], [4, 5]) = 2
+* number_in_months([], [12, 4, 5, 2]) = 0
+*)
+fun number_in_months(x: (int * int * int) list, m: int list) =
+  if null m
+  then 0
+  else number_in_month(x, hd m) + number_in_months(x, tl m)
