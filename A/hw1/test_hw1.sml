@@ -34,3 +34,7 @@ val t22 = dates_in_months([], [12, 4, 5, 2]) = []
 val t23 = get_nth(["a", "b", "c", "d", "e"], 5) = "e"
 val t24 = get_nth(["a", "b", "c", "d", "e"], 3) = "c"
 val t25 = get_nth(["a", "b", "c", "d", "e"], 1) = "a"
+
+val t26 = date_to_string(2000, 6, 8) = "June 8, 2000"
+val t27 = date_to_string(1996, 8, 1) = "August 1, 1996"
+val t28 = date_to_string(2025, 2, 24) = "February 24, 2025"

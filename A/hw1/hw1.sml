@@ -86,3 +86,16 @@ fun get_nth(x: string list, n: int) =
   if n = 1
   then hd x
   else get_nth(tl x, n - 1)
+
+(*
+* Date -> string
+* Cast a given Date into a string
+* date_to_string(2000, 6, 8) = "June 8, 2000"
+* date_to_string(1996, 8, 1) = "August 1, 1996"
+* date_to_string(2025, 2, 24) = "February 24, 2025"
+*)
+fun date_to_string(d: int * int * int) =
+  let 
+    val m = ["January", "February", "March", "April", "May", "June", "July",
+             "August", "September", "October", "November", "December"]
+  in get_nth(m, #2 d) ^ " " ^ Int.toString(#3 d) ^ ", " ^ Int.toString(#1 d) end
