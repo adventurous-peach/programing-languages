@@ -134,3 +134,15 @@ fun what_month(d: int) =
   let 
     val m = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   in number_before_reaching_sum(d, m) + 1 end
+
+(* int * int -> int list
+* ???
+* month_range(1, 3) = [1, 1, 1]
+* month_range(31, 31) = [1]
+* month_range(31, 32) = [1, 2]
+* month_range(31, 30) = []
+*)
+fun month_range(d1: int, d2: int) =
+  if d1 > d2
+  then []
+  else what_month(d1) :: month_range(d1 + 1, d2)

@@ -48,3 +48,8 @@ val t33 = what_month(1) = 1
 val t34 = what_month(31) = 1
 val t35 = what_month(50) = 2
 val t36 = what_month(365) = 12
+
+val t37 = month_range(1, 3) = [1, 1, 1]
+val t38 = month_range(31, 31) = [1]
+val t39 = month_range(31, 32) = [1, 2]
+val t40 = month_range(31, 30) = []
