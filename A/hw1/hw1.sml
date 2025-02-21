@@ -131,9 +131,7 @@ fun number_before_reaching_sum(sum: int, x: int list) =
 * what_month(365) = 12
 *)
 fun what_month(d: int) =
-  let 
-    val m = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-  in number_before_reaching_sum(d, m) + 1 end
+  number_before_reaching_sum(d, [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]) + 1
 
 (* int * int -> int list
 * ???
