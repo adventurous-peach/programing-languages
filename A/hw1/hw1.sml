@@ -146,3 +146,22 @@ fun month_range(d1: int, d2: int) =
   if d1 > d2
   then []
   else what_month(d1) :: month_range(d1 + 1, d2)
+
+(* 
+* Date list -> Date option
+* Return a Date option containing the oldest Date from a given list
+* oldest([(1, 2, 3), (3, 4, 30), (3, 2, 24)]) = SOME(1, 2, 3)
+* oldest([]) = NONE
+* oldest([(9, 2, 3), (3, 4, 30), (3, 2, 24)]) = SOME(3, 2, 24)
+*)
+fun oldest(x: (int * int * int) list) =
+  if null x
+  then NONE
+  else let
+         fun helper_fun(y: (int * int * int) list, acc: (int * int * int)) =
+           if null y
+           then acc
+           else if is_older(hd y, acc)
+                then helper_fun(tl y, hd y)
+                else helper_fun(tl y, acc)
+       in SOME(helper_fun(tl x, hd x)) end

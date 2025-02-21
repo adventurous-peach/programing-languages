@@ -53,3 +53,7 @@ val t37 = month_range(1, 3) = [1, 1, 1]
 val t38 = month_range(31, 31) = [1]
 val t39 = month_range(31, 32) = [1, 2]
 val t40 = month_range(31, 30) = []
+
+val t41 = oldest([(1, 2, 3), (3, 4, 30), (3, 2, 24)]) = SOME(1, 2, 3)
+val t42 = oldest([]) = NONE
+val t43 = oldest([(9, 2, 3), (3, 4, 30), (3, 2, 24)]) = SOME(3, 2, 24)
