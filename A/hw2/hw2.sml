@@ -29,7 +29,7 @@ fun all_except_option(s, l) =
 
 (* string list list * string -> string list
 * ???
-* get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
+* get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Ga", "Fa"]
 * get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
 *)
 fun get_substitutions1(x, s) =
@@ -39,6 +39,20 @@ fun get_substitutions1(x, s) =
                    NONE => get_substitutions1(xs, s)
                | SOME l => l @ get_substitutions1(xs, s)
 
+(* string list list * string -> string list
+* ???
+* get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ga", "Fa", "Ce"]
+* get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
+*)
+fun get_substitutions2(x, s) =
+ let
+    fun helper_fun(x, acc) =
+       case x of
+            [] => acc
+          | x'::xs => case all_except_option(s, x') of
+                           NONE => helper_fun(xs, acc)
+                         | SOME y => helper_fun(xs, y @ acc)
+ in helper_fun(x, []) end
 
 (* you may assume that Num is always used with values 2, 3, ..., 10
    though it will not really come up *)
@@ -52,3 +66,34 @@ datatype move = Discard of card | Draw
 exception IllegalMove
 
 (* put your solutions for problem 2 here *)
+
+(*
+* card -> color
+* Return the given card's color
+* card_color(Spades, Queen) = Black
+* card_color(Clubs, Ace) = Black
+* card_color(Diamonds, King) = Red
+* card_color(Hearts, Num 10) = Red
+*)
+fun card_color(c) =
+   case c of
+        (Spades, _) => Black 
+      | (Clubs, _) => Black
+      | _ => Red
+
+(*
+* card -> rank
+* Return the given card's value
+* card_value(Spades, Queen) = 10
+* card_value(Clubs, Ace) = 11
+* card_value(Hearts, Jack) = 10
+* card_value(Diamonds, King) = 10
+* card_value(Spades, Num 10) = 10
+* card_value(Clubs, Num 2) = 2
+* card_value(Clubs, Num 5) = 5
+*)
+fun card_value(c) =
+   case c of
+        (_, Num n) => n
+      | (_, Ace) => 11
+      | _ => 10
