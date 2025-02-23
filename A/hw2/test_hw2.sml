@@ -34,3 +34,9 @@ val t22 = all_same_color([(Spades, Ace), (Diamonds, King)]) = false
 val t23 = all_same_color([(Hearts, Ace), (Diamonds, King)]) = true
 val t24 = all_same_color([]) = true
 val t25 = all_same_color([(Hearts, Num 2)]) = true
+val t26 = all_same_color([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)]) = false
+
+val t27 = sum_cards([(Spades, Ace), (Clubs, King)]) = 21
+val t28 = sum_cards([(Hearts, Num 2)]) = 2
+val t29 = sum_cards([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)]) = 23
+val t30 = sum_cards([]) = 0

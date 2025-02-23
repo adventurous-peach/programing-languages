@@ -106,8 +106,24 @@ fun card_value(c) =
 * all_same_color([(Hearts, Ace), (Diamonds, King)]) = true
 * all_same_color([]) = true
 * all_same_color([(Hearts, Num 2)]) = true
+* all_same_color([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)]) = false
 *)
 fun all_same_color(cs) =
    case cs of
        x::y::z => card_color(x) = card_color(y) andalso all_same_color(y::z)
       | _ => true
+
+(*
+* card list -> int 
+* sum_cards([(Spades, Ace), (Clubs, King)]) = 21
+* sum_cards([(Hearts, Num 2)]) = 2
+* sum_cards([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)]) = 23
+* sum_cards([]) = 0
+*)
+fun sum_cards(c) =
+   let
+      fun helper_fun(x, acc) =
+         case x of
+              [] => acc
+            | x'::xs => helper_fun(xs, acc + card_value(x'))
+   in helper_fun(c, 0) end
