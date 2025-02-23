@@ -29,16 +29,12 @@ fun is_present(x, elem) =
 *)
 fun all_except_option(s, l) =
    let 
-      fun is_present(x) =
-         case x of
-              [] => false
-            | x'::xs => same_string(x', s) orelse is_present(xs)
       fun helper_fun(x, acc) =
          case x of
               [] => acc
             | x'::xs => helper_fun(xs, if same_string(x', s) then acc else x'::acc)
    in
-      if is_present(l) then SOME(helper_fun(l, [])) else NONE end 
+      if is_present(l, s) then SOME(helper_fun(l, [])) else NONE end 
 
 (* string list list * string -> string list
 * ???
