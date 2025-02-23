@@ -27,3 +27,10 @@ val t16 = card_value(Diamonds, King) = 10
 val t17 = card_value(Spades, Num 10) = 10
 val t18 = card_value(Clubs, Num 2) = 2
 val t19 = card_value(Clubs, Num 5) = 5
+
+val t20 = all_same_color([(Spades, Ace), (Clubs, King)]) = true
+val t21 = all_same_color([(Hearts, Ace), (Clubs, King)]) = false
+val t22 = all_same_color([(Spades, Ace), (Diamonds, King)]) = false
+val t23 = all_same_color([(Hearts, Ace), (Diamonds, King)]) = true
+val t24 = all_same_color([]) = true
+val t25 = all_same_color([(Hearts, Num 2)]) = true

@@ -97,3 +97,18 @@ fun card_value(c) =
         (_, Num n) => n
       | (_, Ace) => 11
       | _ => 10
+
+(* 
+* card list -> bool
+* all_same_color([(Spades, Ace), (Clubs, King)]) = true
+* all_same_color([(Hearts, Ace), (Clubs, King)]) = false
+* all_same_color([(Spades, Ace), (Diamonds, King)]) = false
+* all_same_color([(Hearts, Ace), (Diamonds, King)]) = true
+* all_same_color([]) = true
+* all_same_color([(Hearts, Num 2)]) = true
+*)
+fun all_same_color(cs) =
+   case cs of
+        [] => true
+      | x::[] => true
+      | x::y::z => card_color(x) = card_color(y) andalso all_same_color(y::z)
