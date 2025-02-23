@@ -4,15 +4,15 @@
 
 use "hw2.sml";
 
-val t1 = all_except_option("a", ["a", "b", "c", "d"]) = SOME(["d", "c", "b"])
-val t2 = all_except_option("a", ["a", "b", "c"]) = SOME(["c", "b"])
+val t1 = all_except_option("a", ["a", "b", "c", "d"]) = SOME(["b", "c", "d"])
+val t2 = all_except_option("a", ["a", "b", "c"]) = SOME(["b", "c"])
 val t3 = all_except_option("a", ["a"]) = SOME([])
 val t4 = all_except_option("d", ["a", "b", "c"]) = NONE
 
-val t5 = get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Ga", "Fa"]
+val t5 = get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 val t6 = get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
 
-val t7 = get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ga", "Fa", "Ce"]
+val t7 = get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 val t8 = get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
 
 val t9 = card_color(Spades, Queen) = Black

@@ -22,8 +22,8 @@ fun is_present(x, elem) =
 (* string * string list -> string option
 * Return a string option removing s from a l if s is present in l
 * assume s is listed once at most
-* all_except_option("a", ["a", "b", "c", "d"]) = SOME(["d", "c", "b"])
-* all_except_option("a", ["a", "b", "c"]) = SOME(["c", "b"])
+* all_except_option("a", ["a", "b", "c", "d"]) = SOME(["b", "c", "d"])
+* all_except_option("a", ["a", "b", "c"]) = SOME(["b", "c"])
 * all_except_option("a", ["a"]) = SOME([])
 * all_except_option("d", ["a", "b", "c"]) = NONE
 *)
@@ -32,13 +32,13 @@ fun all_except_option(s, l) =
       fun helper_fun(x, acc) =
          case x of
               [] => acc
-            | x'::xs => helper_fun(xs, if same_string(x', s) then acc else x'::acc)
+            | x'::xs => helper_fun(xs, if same_string(x', s) then acc else acc @ [x'])
    in
       if is_present(l, s) then SOME(helper_fun(l, [])) else NONE end 
 
 (* string list list * string -> string list
 * ???
-* get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Ga", "Fa"]
+* get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 * get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
 *)
 fun get_substitutions1(x, s) =
@@ -50,7 +50,7 @@ fun get_substitutions1(x, s) =
 
 (* string list list * string -> string list
 * ???
-* get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ga", "Fa", "Ce"]
+* get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 * get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
 *)
 fun get_substitutions2(x, s) =
@@ -60,7 +60,7 @@ fun get_substitutions2(x, s) =
             [] => acc
           | x'::xs => case all_except_option(s, x') of
                            NONE => helper_fun(xs, acc)
-                         | SOME y => helper_fun(xs, y @ acc)
+                         | SOME y => helper_fun(xs, acc @ y)
  in helper_fun(x, []) end
 
 (* you may assume that Num is always used with values 2, 3, ..., 10
