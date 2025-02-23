@@ -4,6 +4,19 @@
 fun same_string(s1 : string, s2 : string) =
     s1 = s2
 
+(* 
+* a' list * a' -> bool
+* Check if elem is a member of x
+* is_present([1, 2, 3], 2) = true
+* is_present([1, 2, 3], 4) = false
+* is_present(["a", "b", "c"], "a") = true
+* is_present(["a", "b", "c"], "4") = false
+*)
+fun is_present(x, elem) =
+   case x of
+        [] => false
+      | x'::xs => x' = elem orelse is_present(xs, elem)
+
 (* put your solutions for problem 1 here *)
 
 (* string * string list -> string option
