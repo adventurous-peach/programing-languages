@@ -32,7 +32,7 @@ fun all_except_option(s, l) =
       fun helper_fun(x, acc) =
          case x of
               [] => acc
-            | x'::xs => helper_fun(xs, if same_string(x', s) then acc else acc @ [x'])
+            | x'::xs => helper_fun(xs, if x' = s then acc else acc @ [x'])
    in
       if is_present(l, s) then SOME(helper_fun(l, [])) else NONE end 
 
@@ -106,6 +106,23 @@ fun card_value(c) =
         (_, Num n) => n
       | (_, Ace) => 11
       | _ => 10
+
+(*
+* card list * card * exception -> card list
+* Return cs with card c removed or raise exception e if c is not present in cs
+* (remove_card([], (Clubs, King), IllegalMove) handle IllegalMove => 0) = 0
+* (remove_card([(Hearts, Ace), (Clubs, King)], (Spades, Num 2), IllegalMove) handle IllegalMove => 0) = 0
+* remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
+* remove_card([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)], 
+*              (Diamonds, King), IllegalMove) = [(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)]
+*)
+fun remove_card(cs, c, e) =
+   case cs of
+        [] => raise e
+      | _ => if is_present(cs, c) 
+             then case all_except_option(c, cs) of
+                       SOME v => v
+             else raise e
 
 (* 
 * card list -> bool
