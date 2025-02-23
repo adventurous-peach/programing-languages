@@ -109,6 +109,5 @@ fun card_value(c) =
 *)
 fun all_same_color(cs) =
    case cs of
-        [] => true
-      | x::[] => true
-      | x::y::z => card_color(x) = card_color(y) andalso all_same_color(y::z)
+       x::y::z => card_color(x) = card_color(y) andalso all_same_color(y::z)
+      | _ => true
