@@ -19,7 +19,7 @@ fun is_present(x, elem) =
 
 (* put your solutions for problem 1 here *)
 
-(* string * string list -> string option
+(* a' * a' list -> string option
 * Return a string option removing s from a l if s is present in l
 * assume s is listed once at most
 * all_except_option("a", ["a", "b", "c", "d"]) = SOME(["b", "c", "d"])
@@ -36,7 +36,7 @@ fun all_except_option(s, l) =
    in
       if is_present(l, s) then SOME(helper_fun(l, [])) else NONE end 
 
-(* string list list * string -> string list
+(* a' list list * a' -> string list
 * ???
 * get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 * get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
@@ -48,7 +48,7 @@ fun get_substitutions1(x, s) =
                    NONE => get_substitutions1(xs, s)
                | SOME l => l @ get_substitutions1(xs, s)
 
-(* string list list * string -> string list
+(* a' list list * a' -> string list
 * ???
 * get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 * get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
@@ -110,11 +110,11 @@ fun card_value(c) =
 (*
 * card list * card * exception -> card list
 * Return cs with card c removed or raise exception e if c is not present in cs
-* (remove_card([], (Clubs, King), IllegalMove) handle IllegalMove => 0) = 0
-* (remove_card([(Hearts, Ace), (Clubs, King)], (Spades, Num 2), IllegalMove) handle IllegalMove => 0) = 0
+* (remove_card([], (Clubs, King), IllegalMove) handle IllegalMove => (Clubs, King)) = (Clubs, King)
+* (remove_card([(Hearts, Ace), (Clubs, King)], (Spades, Num 2), IllegalMove) handle IllegalMove => (Clubs, King)) = (Clubs, King)
 * remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
 * remove_card([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)], 
-*              (Diamonds, King), IllegalMove) = [(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)]
+*              (Diamonds, King), IllegalMove) = [(Hearts, Ace), (Clubs, Num 2)]
 *)
 fun remove_card(cs, c, e) =
    case cs of

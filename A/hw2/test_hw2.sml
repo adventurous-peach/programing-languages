@@ -45,3 +45,11 @@ val t31 = is_present([1, 2, 3], 2) = true
 val t32 = is_present([1, 2, 3], 4) = false
 val t33 = is_present(["a", "b", "c"], "a") = true
 val t34 = is_present(["a", "b", "c"], "4") = false
+
+val t35 = (remove_card([], (Clubs, King), IllegalMove) handle IllegalMove => [(Clubs, King)]) = 
+   [(Clubs, King)]
+val t36 = (remove_card([(Hearts, Ace), (Clubs, King)], (Spades, Num 2), IllegalMove) 
+   handle IllegalMove => [(Clubs, King)]) = [(Clubs, King)]
+val t37 = remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
+val t38 = remove_card([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)],
+   (Diamonds, King), IllegalMove) = [(Hearts, Ace), (Clubs, Num 2)]
