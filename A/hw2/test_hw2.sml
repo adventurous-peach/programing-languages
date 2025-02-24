@@ -53,3 +53,8 @@ val t36 = (remove_card([(Hearts, Ace), (Clubs, King)], (Spades, Num 2), IllegalM
 val t37 = remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
 val t38 = remove_card([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)],
    (Diamonds, King), IllegalMove) = [(Hearts, Ace), (Clubs, Num 2)]
+
+val t39 = similar_names([], {first="f", middle="m", last="l"}) = [{first="f", middle="m", last="l"}]
+val t40 = similar_names([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], {first="Jo", middle="m", last="l"}) =
+   [{first="Jo", middle="m", last="l"}, {first="Ce", middle="m", last="l"}, 
+   {first="Fa", middle="m", last="l"}, {first="Ga", middle="m", last="l"}]

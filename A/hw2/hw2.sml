@@ -19,8 +19,8 @@ fun is_present(lst, e) =
 
 (* put your solutions for problem 1 here *)
 
-(* a' * a' list -> 'a option
-* Return an a' option removing e from the given list if e is a member of the list
+(* a' * a' list -> 'a list option
+* Return an a' list option removing e from the given list if e is a member of the list
 * Assume e is listed once at most
 * all_except_option("a", ["a", "b", "c", "d"]) = SOME(["b", "c", "d"])
 * all_except_option("a", ["a", "b", "c"]) = SOME(["b", "c"])
@@ -62,6 +62,22 @@ fun get_substitutions2(lst, e) =
                            NONE => helper_fun(xs, acc)
                          | SOME v => helper_fun(xs, acc @ v)
  in helper_fun(lst, []) end
+
+(*
+* a' list list * {first: string, middle: string, last: string} -> {first: a', middle: string, last: string} list
+* ???
+* similar_names([], {first="f", middle="m", last="l"}) = [{first="f", middle="m", last="l"}]
+* similar_names([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], {first="Jo", middle="m", last="l"}) =
+*  [{first="Jo", middle="m", last="l"}, {first="Ce", middle="m", last="l"},
+*     {first="Fa", middle="m", last="l"}, {first="Ga", middle="m", last="l"}]
+*)
+fun similar_names(lst, {first = f, middle = m, last = l}) =
+   let
+      fun helper_fun(lst', acc) =
+         case lst' of
+              [] => acc
+            | x::xs => helper_fun(xs, acc @ [{first = x, middle = m, last = l}])
+   in helper_fun(get_substitutions2(lst, f), [{first = f, middle = m, last = l}]) end
 
 (* you may assume that Num is always used with values 2, 3, ..., 10
    though it will not really come up *)
