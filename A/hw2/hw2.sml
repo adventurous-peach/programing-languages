@@ -6,62 +6,62 @@ fun same_string(s1 : string, s2 : string) =
 
 (* 
 * a' list * a' -> bool
-* Check if elem is a member of x
+* Check if e is a member of the given list
 * is_present([1, 2, 3], 2) = true
 * is_present([1, 2, 3], 4) = false
 * is_present(["a", "b", "c"], "a") = true
 * is_present(["a", "b", "c"], "4") = false
 *)
-fun is_present(x, elem) =
-   case x of
+fun is_present(lst, e) =
+   case lst of
         [] => false
-      | x'::xs => x' = elem orelse is_present(xs, elem)
+      | x::xs => x = e orelse is_present(xs, e)
 
 (* put your solutions for problem 1 here *)
 
-(* a' * a' list -> string option
-* Return a string option removing s from a l if s is present in l
-* assume s is listed once at most
+(* a' * a' list -> 'a option
+* Return an a' option removing e from the given list if e is a member of the list
+* Assume e is listed once at most
 * all_except_option("a", ["a", "b", "c", "d"]) = SOME(["b", "c", "d"])
 * all_except_option("a", ["a", "b", "c"]) = SOME(["b", "c"])
 * all_except_option("a", ["a"]) = SOME([])
 * all_except_option("d", ["a", "b", "c"]) = NONE
 *)
-fun all_except_option(s, l) =
+fun all_except_option(e, lst) =
    let 
       fun helper_fun(x, acc) =
          case x of
               [] => acc
-            | x'::xs => helper_fun(xs, if x' = s then acc else acc @ [x'])
+            | x'::xs => helper_fun(xs, if x' = e then acc else acc @ [x'])
    in
-      if is_present(l, s) then SOME(helper_fun(l, [])) else NONE end 
+      if is_present(lst, e) then SOME(helper_fun(lst, [])) else NONE end 
 
-(* a' list list * a' -> string list
+(* a' list list * a' -> 'a list
 * ???
 * get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 * get_substitutions1([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
 *)
-fun get_substitutions1(x, s) =
-   case x of
+fun get_substitutions1(lst, e) =
+   case lst of
         [] => []
-      | x'::xs => case all_except_option(s, x') of
-                   NONE => get_substitutions1(xs, s)
-               | SOME l => l @ get_substitutions1(xs, s)
+      | x::xs => case all_except_option(e, x) of
+                   NONE => get_substitutions1(xs, e)
+               | SOME v => v @ get_substitutions1(xs, e)
 
-(* a' list list * a' -> string list
+(* a' list list * a' -> a' list
 * ???
 * get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Jo") = ["Ce", "Fa", "Ga"]
 * get_substitutions2([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], "Po") = []
 *)
-fun get_substitutions2(x, s) =
+fun get_substitutions2(lst, e) =
  let
     fun helper_fun(x, acc) =
        case x of
             [] => acc
-          | x'::xs => case all_except_option(s, x') of
+          | x'::xs => case all_except_option(e, x') of
                            NONE => helper_fun(xs, acc)
-                         | SOME y => helper_fun(xs, acc @ y)
- in helper_fun(x, []) end
+                         | SOME v => helper_fun(xs, acc @ v)
+ in helper_fun(lst, []) end
 
 (* you may assume that Num is always used with values 2, 3, ..., 10
    though it will not really come up *)
@@ -109,7 +109,7 @@ fun card_value(c) =
 
 (*
 * card list * card * exception -> card list
-* Return cs with card c removed or raise exception e if c is not present in cs
+* Return cs with card c removed or raise exception e if c is not a member of cs
 * (remove_card([], (Clubs, King), IllegalMove) handle IllegalMove => (Clubs, King)) = (Clubs, King)
 * (remove_card([(Hearts, Ace), (Clubs, King)], (Spades, Num 2), IllegalMove) handle IllegalMove => (Clubs, King)) = (Clubs, King)
 * remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
@@ -126,6 +126,7 @@ fun remove_card(cs, c, e) =
 
 (* 
 * card list -> bool
+* Check if all cards, members of the given list, are of the same color
 * all_same_color([(Spades, Ace), (Clubs, King)]) = true
 * all_same_color([(Hearts, Ace), (Clubs, King)]) = false
 * all_same_color([(Spades, Ace), (Diamonds, King)]) = false
@@ -141,6 +142,7 @@ fun all_same_color(cs) =
 
 (*
 * card list -> int 
+* Return the value of all the cards in the given list
 * sum_cards([(Spades, Ace), (Clubs, King)]) = 21
 * sum_cards([(Hearts, Num 2)]) = 2
 * sum_cards([(Hearts, Ace), (Diamonds, King), (Clubs, Num 2)]) = 23
