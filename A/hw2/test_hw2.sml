@@ -58,3 +58,9 @@ val t39 = similar_names([], {first="f", middle="m", last="l"}) = [{first="f", mi
 val t40 = similar_names([["Jo", "Ce"], ["a", "b"], ["Fa", "Jo", "Ga"]], {first="Jo", middle="m", last="l"}) =
    [{first="Jo", middle="m", last="l"}, {first="Ce", middle="m", last="l"}, 
    {first="Fa", middle="m", last="l"}, {first="Ga", middle="m", last="l"}]
+
+val t41 = score([(Hearts, Num 3), (Clubs, Ace)], 4) = 30
+val t42 = score([(Hearts, Num 3), (Diamonds, Ace)], 4) = 15
+val t43 = score([(Hearts, Num 3), (Diamonds, Ace)], 20) = 3
+val t44 = score([(Hearts, Num 3), (Clubs, Ace)], 20) = 6
+val t45 = score([], 20) = 10

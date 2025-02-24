@@ -171,3 +171,18 @@ fun sum_cards(c) =
               [] => acc
             | x'::xs => helper_fun(xs, acc + card_value(x'))
    in helper_fun(c, 0) end
+
+(* 
+* card list * int -> int
+* Compute a game's final score
+* score([(Hearts, Num 3), (Clubs, Ace)], 4) = 30
+* score([(Hearts, Num 3), (Diamonds, Ace)], 4) = 15
+* score([(Hearts, Num 3), (Diamonds, Ace)], 20) = 3
+* score([(Hearts, Num 3), (Clubs, Ace)], 20) = 6
+* score([], 20) = 10
+*)
+fun score(c, g) =
+   let
+      val s = sum_cards(c)
+      val pre_score = if s > g then (s - g) * 3 else g - s
+   in if all_same_color(c) then pre_score div 2 else pre_score end
