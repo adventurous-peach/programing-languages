@@ -4,6 +4,7 @@
 
 use "hw2.sml";
 
+val t0 = all_except_option("a", ["a", "a", "c", "d"]) = SOME(["a", "c", "d"])
 val t1 = all_except_option("a", ["a", "b", "c", "d"]) = SOME(["b", "c", "d"])
 val t2 = all_except_option("a", ["a", "b", "c"]) = SOME(["b", "c"])
 val t3 = all_except_option("a", ["a"]) = SOME([])

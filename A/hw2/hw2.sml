@@ -22,6 +22,7 @@ fun is_present(lst, e) =
 (* a' * a' list -> 'a list option
 * Return an a' list option removing e from the given list if e is a member of the list
 * Assume e is listed once at most
+* all_except_option("a", ["a", "a", "c", "d"]) = SOME(["a", "c", "d"])
 * all_except_option("a", ["a", "b", "c", "d"]) = SOME(["b", "c", "d"])
 * all_except_option("a", ["a", "b", "c"]) = SOME(["b", "c"])
 * all_except_option("a", ["a"]) = SOME([])
@@ -32,7 +33,7 @@ fun all_except_option(e, lst) =
       fun helper_fun(x, acc) =
          case x of
               [] => acc
-            | x'::xs => helper_fun(xs, if x' = e then acc else acc @ [x'])
+            | x'::xs => if x' = e then acc @ xs else helper_fun(xs, acc @ [x'])
    in
       if is_present(lst, e) then SOME(helper_fun(lst, [])) else NONE end 
 
