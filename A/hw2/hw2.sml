@@ -172,7 +172,7 @@ fun sum_cards(c) =
             | x'::xs => helper_fun(xs, acc + card_value(x'))
    in helper_fun(c, 0) end
 
-(* 
+(*
 * card list * int -> int
 * Compute a game's final score
 * score([(Hearts, Num 3), (Clubs, Ace)], 4) = 30
@@ -186,3 +186,31 @@ fun score(c, g) =
       val s = sum_cards(c)
       val pre_score = if s > g then (s - g) * 3 else g - s
    in if all_same_color(c) then pre_score div 2 else pre_score end
+
+(*
+* card list * move list * int -> int
+* Play a match
+* officiate([(Hearts, Num 2),(Clubs, Num 4)],[], 15) = 7
+* officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
+* officiate ([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
+*  [Draw,Draw,Draw,Draw,Draw], 42) = 3
+* (officiate([(Clubs,Jack),(Spades,Num(8))], [Draw,Discard(Hearts,Jack)], 42)
+*  handle IllegalMove => 0) = 0
+*)
+fun officiate(c, m, g) =
+   let
+      fun game(cs, hc, mv) =
+         case mv of
+              [] => score(hc, g)
+            | x::xs => case x of
+                            Discard c => game(cs, remove_card(hc, c, IllegalMove), xs)
+                          | Draw => case cs of
+                                         [] => score(hc, g)
+                                       | y::ys => let
+                                                     val t = y::hc
+                                                  in 
+                                                    if sum_cards(t) > g
+                                                    then score(t, g)
+                                                    else game(ys, t, xs)
+                                                  end
+   in game(c, [], m) end

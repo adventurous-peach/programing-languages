@@ -64,3 +64,11 @@ val t42 = score([(Hearts, Num 3), (Diamonds, Ace)], 4) = 15
 val t43 = score([(Hearts, Num 3), (Diamonds, Ace)], 20) = 3
 val t44 = score([(Hearts, Num 3), (Clubs, Ace)], 20) = 6
 val t45 = score([], 20) = 10
+
+
+val t46 = officiate([(Hearts, Num 2),(Clubs, Num 4)],[], 15) = 7 
+val t47 = officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
+val t48 = officiate ([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
+   [Draw,Draw,Draw,Draw,Draw], 42) = 3
+val t49 = (officiate([(Clubs,Jack),(Spades,Num(8))],
+   [Draw,Discard(Hearts,Jack)], 42) handle IllegalMove => 0) = 0
