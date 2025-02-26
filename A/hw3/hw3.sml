@@ -102,3 +102,13 @@ val longest_string4 = longest_string_helper (fn (i, s) => i >= s)
 * longest_capitalized([]) = ""
 *)
 val longest_capitalized = longest_string1 o only_capitals
+
+(*
+* string -> string
+* Return the string s spelled backwards
+* rev_string("") = ""
+* rev_string("a") = "a"
+* rev_string("go") = "og"
+* rev_string("hola") = "aloh"
+*)
+val rev_string = String.implode o List.rev o String.explode

@@ -28,3 +28,8 @@ val t16 = longest_capitalized(["as", "Asd", "Asc", "asD", "DEsd"]) = "DEsd"
 val t17 = longest_capitalized(["as", "Asd", "Asc", "asD", "dEsd"]) = "Asd"
 val t18 = longest_capitalized(["as", "asd", "sd"]) = ""
 val t19 = longest_capitalized([]) = ""
+
+val t20 = rev_string("") = ""
+val t21 = rev_string("a") = "a"
+val t22 = rev_string("go") = "og"
+val t23 = rev_string("hola") = "aloh"
