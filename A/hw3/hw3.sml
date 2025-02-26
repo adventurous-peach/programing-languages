@@ -46,12 +46,21 @@ fun only_capitals lst =
 (*
 * string list -> string
 * Return the longest string from the given list
+* In case of a tie, return the string closest to the begining
 * longest_string1(["a", "b", "abc", "db"]) = "abc"
 * longest_string1(["abc", "dub", "a"]) = "abc"
 * longest_string1([]) = ""
 *)
 fun longest_string1 lst =
-    let
-	fun compare(i, s) =
-	    if String.size i > String.size s then i else s
-    in foldl compare "" lst end
+    foldl (fn (i, s) => if String.size i > String.size s then i else s) "" lst
+
+(*
+* string list -> string
+* Return the longest string from the given list
+* In case of a tie, return the string closest to the end
+* longest_string2(["a", "b", "abc", "db"]) = "abc"
+* longest_string2(["abc", "dub", "a"]) = "dub"
+* longest_string2([]) = ""
+*)
+fun longest_string2 lst =
+    foldl (fn (i, s) => if String.size i >= String.size s then i else s) "" lst
