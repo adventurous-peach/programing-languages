@@ -33,3 +33,25 @@ datatype typ = Anything
 	     | Datatype of string
 
 (**** you can put all your code here ****)
+
+(*
+* string list -> string list
+* Return the strings from the given list whose char at index 0 is capitalized
+* only_capitals(["a", "Hola", "hola", "Perro"]) = ["Hola", "Perro"]
+* only_capitals(["a", "A", "B", "C", "eE", "mSDA"]) = ["A", "B", "C"]
+*)
+fun only_capitals lst =
+    List.filter (fn s => (Char.isUpper o String.sub) (s,0)) lst
+
+(*
+* string list -> string
+* Return the longest string from the given list
+* longest_string1(["a", "b", "abc", "db"]) = "abc"
+* longest_string1(["abc", "dub", "a"]) = "abc"
+* longest_string1([]) = ""
+*)
+fun longest_string1 lst =
+    let
+	fun compare(i, s) =
+	    if String.size i > String.size s then i else s
+    in foldl compare "" lst end
