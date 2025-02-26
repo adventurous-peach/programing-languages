@@ -39,6 +39,7 @@ datatype typ = Anything
 * Return the strings from the given list whose char at index 0 is capitalized
 * only_capitals(["a", "Hola", "hola", "Perro"]) = ["Hola", "Perro"]
 * only_capitals(["a", "A", "B", "C", "eE", "mSDA"]) = ["A", "B", "C"]
+* only_capitals(["a", "s"]) = []
 *)
 fun only_capitals lst =
     List.filter (fn s => (Char.isUpper o String.sub) (s,0)) lst
@@ -64,3 +65,40 @@ fun longest_string1 lst =
 *)
 fun longest_string2 lst =
     foldl (fn (i, s) => if String.size i >= String.size s then i else s) "" lst
+
+(*
+* (int * int -> bool) -> string list -> string
+* ???
+*)
+fun longest_string_helper f lst =
+    foldl (fn (i, s) => if f(String.size i,String.size s) then i else s) "" lst
+
+(*
+* string list -> string
+* Return the longest string from the given list
+* In case of a tie, return the string closest to the begining
+* longest_string3(["a", "b", "abc", "db"]) = "abc"
+* longest_string3(["abc", "dub", "a"]) = "abc"
+* longest_string3([]) = ""
+*)
+val longest_string3 = longest_string_helper (fn (i, s) => i > s)
+
+(*
+* string list -> string
+* Return the longest string from the given list
+* In case of a tie, return the string closest to the end
+* longest_string4(["a", "b", "abc", "db"]) = "abc"
+* longest_string4(["abc", "dub", "a"]) = "dub"
+* longest_string4([]) = ""
+*)
+val longest_string4 = longest_string_helper (fn (i, s) => i >= s)
+
+(* 
+* string list -> string
+* Return the longest string from a given list whose char at index 0 is capitalized
+* longest_capitalized(["as", "Asd", "Asc", "asD", "DEsd"]) = "DEsd"
+* longest_capitalized(["as", "Asd", "Asc", "asD", "dEsd"]) = "Asd"
+* longest_capitalized(["as", "asd", "sd"]) = ""
+* longest_capitalized([]) = ""
+*)
+val longest_capitalized = longest_string1 o only_capitals
