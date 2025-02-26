@@ -112,3 +112,17 @@ val longest_capitalized = longest_string1 o only_capitals
 * rev_string("hola") = "aloh"
 *)
 val rev_string = String.implode o List.rev o String.explode
+
+(* 
+* ('a -> 'b option) -> a' list -> 'b
+* Return v of SOME f(lst) or raise NoAnswer otherwise
+* first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] = ":P"
+* (first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] handle
+* NoAnswer => ":P") = ":P"
+*)
+fun first_answer f lst =
+    case lst of
+	 [] => raise NoAnswer
+       | x::xs => case f x of
+		       NONE => first_answer f xs
+		     | SOME v => v

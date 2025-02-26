@@ -33,3 +33,7 @@ val t20 = rev_string("") = ""
 val t21 = rev_string("a") = "a"
 val t22 = rev_string("go") = "og"
 val t23 = rev_string("hola") = "aloh"
+
+val t24 = first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] = ":P"
+val t25 = (first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] 
+    handle NoAnswer => ":P") = ":P"
