@@ -126,3 +126,35 @@ fun first_answer f lst =
        | x::xs => case f x of
 		       NONE => first_answer f xs
 		     | SOME v => v
+
+(*
+* (a' -> b' option) -> a' list -> b' list
+* ???
+* all_answers (fn e => if e > 3 then SOME [e] else NONE) [1, 2, 3] = NONE
+* all_answers (fn e => if e > 3 then SOME [e] else NONE) [5, 6] = SOME [5, 6]
+* all_answers (fn e => if e > 3 then SOME [e] else NONE) [] = SOME []
+*)
+fun all_answers f lst =
+    let 
+	fun help(lst, acc) =
+	    case lst of
+		  [] => SOME acc
+		| x::xs => case f x of
+			  NONE => NONE
+			| SOME v => help(xs, acc @ v)
+    in help(lst, []) end
+
+
+(*
+* pattern -> int
+* Count how many Wildcard there are in pattern p
+* count_wildcards Wildcard = 1 
+* count_wildcards (Variable "hola") = 0
+* count_wildcards UnitP = 0
+* count_wildcards (ConsP 23) = 0
+* count_wildcards (TupleP [(Variable "hola"), UnitP]) = 0
+* count_wildcards (TupleP [(Variable "hola"), Wilcard]) = 1
+* count_wildcards (ConstructorP (":P", ConsP 3)) = 0
+* count_wildcards (ConstructorP (":P", Wildcard)) = 0
+*)
+val count_wildcards = g (fn _ => 1) (fn _ => 0)

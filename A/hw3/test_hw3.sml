@@ -37,3 +37,17 @@ val t23 = rev_string("hola") = "aloh"
 val t24 = first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] = ":P"
 val t25 = (first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] 
     handle NoAnswer => ":P") = ":P"
+
+
+val t26 = all_answers (fn e => if e > 3 then SOME [e] else NONE) [1, 2, 3] = NONE
+val t27 = all_answers (fn e => if e > 3 then SOME [e] else NONE) [5, 6] = SOME [5, 6]
+val t28 = all_answers (fn e => if e > 3 then SOME [e] else NONE) [] = SOME []
+
+val t29 = count_wildcards Wildcard = 1 
+val t30 = count_wildcards (Variable "hola") = 0
+val t31 = count_wildcards UnitP = 0
+val t32 = count_wildcards (ConstP 23) = 0
+val t33 = count_wildcards (TupleP [(Variable "hola"), UnitP]) = 0
+val t34 = count_wildcards (TupleP [(Variable "hola"), Wildcard]) = 1
+val t35 = count_wildcards (ConstructorP (":P", ConstP 3)) = 0
+val t36 = count_wildcards (ConstructorP (":P", Wildcard)) = 1
