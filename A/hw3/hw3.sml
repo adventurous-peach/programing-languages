@@ -169,3 +169,13 @@ val count_wildcards = g (fn _ => 1) (fn _ => 0)
 * count_wild_and_variable_lengths (ConstP 234) = 0
 *)
 val count_wild_and_variable_lengths = g (fn _ => 1) (fn s => String.size s)
+
+(*
+* Count how many times string s appears in p as Variable s
+* count_some_var (":P", Wildcard) = 0
+* count_some_var ("s", Variable ":P") = 0
+* count_some_var ("o.O", TupleP [Variable "o.O", Variable "o.O", Wildcard,
+* ConstP 3, ConstructorP ("o.O", TupleP [Variable "o.O", Wildcard])]) = 3
+*)
+fun count_some_var(s, p) = 
+    g (fn _ => 0) (fn e => if e = s then 1 else 0) p

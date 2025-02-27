@@ -57,3 +57,8 @@ val t37 = count_wild_and_variable_lengths (TupleP [Variable "hola", ConstP 23, W
 val t38 = count_wild_and_variable_lengths (Variable "Pero bueno...") = 13
 val t39 = count_wild_and_variable_lengths Wildcard = 1
 val t40 = count_wild_and_variable_lengths (ConstP 234) = 0
+
+val t41 = count_some_var (":P", Wildcard) = 0
+val t42 = count_some_var ("s", Variable ":P") = 0
+val t43 = count_some_var ("o.O", TupleP [Variable "o.O", Variable "o.O", Wildcard, 
+    ConstP 3, ConstructorP ("o.O", TupleP [Variable "o.O", Wildcard])]) = 3
