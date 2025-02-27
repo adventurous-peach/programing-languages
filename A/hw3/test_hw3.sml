@@ -51,3 +51,9 @@ val t33 = count_wildcards (TupleP [(Variable "hola"), UnitP]) = 0
 val t34 = count_wildcards (TupleP [(Variable "hola"), Wildcard]) = 1
 val t35 = count_wildcards (ConstructorP (":P", ConstP 3)) = 0
 val t36 = count_wildcards (ConstructorP (":P", Wildcard)) = 1
+
+val t37 = count_wild_and_variable_lengths (TupleP [Variable "hola", ConstP 23, Wildcard,
+    ConstructorP ("P:", TupleP [Variable ":x", Wildcard, Wildcard])]) = 9
+val t38 = count_wild_and_variable_lengths (Variable "Pero bueno...") = 13
+val t39 = count_wild_and_variable_lengths Wildcard = 1
+val t40 = count_wild_and_variable_lengths (ConstP 234) = 0

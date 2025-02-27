@@ -151,10 +151,21 @@ fun all_answers f lst =
 * count_wildcards Wildcard = 1 
 * count_wildcards (Variable "hola") = 0
 * count_wildcards UnitP = 0
-* count_wildcards (ConsP 23) = 0
+* count_wildcards (ConstP 23) = 0
 * count_wildcards (TupleP [(Variable "hola"), UnitP]) = 0
-* count_wildcards (TupleP [(Variable "hola"), Wilcard]) = 1
-* count_wildcards (ConstructorP (":P", ConsP 3)) = 0
-* count_wildcards (ConstructorP (":P", Wildcard)) = 0
+* count_wildcards (TupleP [(Variable "hola"), Wildcard]) = 1
+* count_wildcards (ConstructorP (":P", ConstP 3)) = 0
+* count_wildcards (ConstructorP (":P", Wildcard)) = 1
 *)
 val count_wildcards = g (fn _ => 1) (fn _ => 0)
+
+(*
+* pattern -> int
+* Count how many Wildcard there are plus the length of all strings s in Variable s of p
+* count_wild_and_variable_lengths (TupleP [Variable "hola", ConstP 23, Wildcard,
+*   ConstructorP ("P:", TupleP [Variable ":x", Wildcard, Wildcard])]) = 9
+* count_wild_and_variable_lengths (Variable "Pero bueno...") = 13
+* count_wild_and_variable_lengths Wildcard = 1
+* count_wild_and_variable_lengths (ConstP 234) = 0
+*)
+val count_wild_and_variable_lengths = g (fn _ => 1) (fn s => String.size s)
