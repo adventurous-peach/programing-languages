@@ -62,3 +62,12 @@ val t41 = count_some_var (":P", Wildcard) = 0
 val t42 = count_some_var ("s", Variable ":P") = 0
 val t43 = count_some_var ("o.O", TupleP [Variable "o.O", Variable "o.O", Wildcard, 
     ConstP 3, ConstructorP ("o.O", TupleP [Variable "o.O", Wildcard])]) = 3
+
+(*
+val t44 = check_pat (Variable ":O") = true
+val t45 = check_pat Wildcard = true
+val t46 = check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21, 
+    Constructor ("S: > :P", TupleP [Variable ":S", Variable ";)", Wildcard])]) = true
+val t47 = check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21, 
+    Constructor ("S: > :P", TupleP [Variable "S:", Variable ";)", Wildcard])]) = false
+*)

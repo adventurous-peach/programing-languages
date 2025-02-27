@@ -179,3 +179,28 @@ val count_wild_and_variable_lengths = g (fn _ => 1) (fn s => String.size s)
 *)
 fun count_some_var(s, p) = 
     g (fn _ => 0) (fn e => if e = s then 1 else 0) p
+
+(*
+* Check if all strings s in Variable s are different for p
+* check_pat (Variable ":O") = true
+* check_pat Wildcard = true
+* check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21,
+* Constructor ("S: > :P", TupleP [Variable ":S", Variable ";)", Wildcard])]) = true
+* check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21,
+* Constructor ("S: > :P", TupleP [Variable "S:", Variable ";)", Wildcard])]) = false
+*)
+fun check_pat p =
+    let 
+	fun get_vars p =
+	    case p of
+		  Variable s => [s]
+		| TupleP lst => List.foldl (fn (e,acc) => (get_vars e) @ acc) [] lst
+		| ConstructorP (_, p) => get_vars p
+		| _ => []
+	fun check_repeats lst =
+	    case lst of
+		  [] => true
+		| x::xs => if List.exists (fn e => x = e) xs
+			   then false
+			   else check_repeats xs
+    in (check_repeats o get_vars) p end
