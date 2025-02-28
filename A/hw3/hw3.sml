@@ -34,92 +34,26 @@ datatype typ = Anything
 
 (**** you can put all your code here ****)
 
-(*
-* string list -> string list
-* Return the strings from the given list whose char at index 0 is capitalized
-* only_capitals(["a", "Hola", "hola", "Perro"]) = ["Hola", "Perro"]
-* only_capitals(["a", "A", "B", "C", "eE", "mSDA"]) = ["A", "B", "C"]
-* only_capitals(["a", "s"]) = []
-*)
-fun only_capitals lst =
-    List.filter (fn s => (Char.isUpper o String.sub) (s,0)) lst
+val only_capitals =
+    List.filter (fn s => (Char.isUpper o String.sub) (s,0))
 
-(*
-* string list -> string
-* Return the longest string from the given list
-* In case of a tie, return the string closest to the begining
-* longest_string1(["a", "b", "abc", "db"]) = "abc"
-* longest_string1(["abc", "dub", "a"]) = "abc"
-* longest_string1([]) = ""
-*)
-fun longest_string1 lst =
-    foldl (fn (i, s) => if String.size i > String.size s then i else s) "" lst
+val longest_string1 =
+    foldl (fn (i, s) => if String.size i > String.size s then i else s) ""
 
-(*
-* string list -> string
-* Return the longest string from the given list
-* In case of a tie, return the string closest to the end
-* longest_string2(["a", "b", "abc", "db"]) = "abc"
-* longest_string2(["abc", "dub", "a"]) = "dub"
-* longest_string2([]) = ""
-*)
 fun longest_string2 lst =
     foldl (fn (i, s) => if String.size i >= String.size s then i else s) "" lst
 
-(*
-* (int * int -> bool) -> string list -> string
-* ???
-*)
 fun longest_string_helper f lst =
     foldl (fn (i, s) => if f(String.size i,String.size s) then i else s) "" lst
 
-(*
-* string list -> string
-* Return the longest string from the given list
-* In case of a tie, return the string closest to the begining
-* longest_string3(["a", "b", "abc", "db"]) = "abc"
-* longest_string3(["abc", "dub", "a"]) = "abc"
-* longest_string3([]) = ""
-*)
 val longest_string3 = longest_string_helper (fn (i, s) => i > s)
 
-(*
-* string list -> string
-* Return the longest string from the given list
-* In case of a tie, return the string closest to the end
-* longest_string4(["a", "b", "abc", "db"]) = "abc"
-* longest_string4(["abc", "dub", "a"]) = "dub"
-* longest_string4([]) = ""
-*)
 val longest_string4 = longest_string_helper (fn (i, s) => i >= s)
 
-(* 
-* string list -> string
-* Return the longest string from a given list whose char at index 0 is capitalized
-* longest_capitalized(["as", "Asd", "Asc", "asD", "DEsd"]) = "DEsd"
-* longest_capitalized(["as", "Asd", "Asc", "asD", "dEsd"]) = "Asd"
-* longest_capitalized(["as", "asd", "sd"]) = ""
-* longest_capitalized([]) = ""
-*)
 val longest_capitalized = longest_string1 o only_capitals
 
-(*
-* string -> string
-* Return the string s spelled backwards
-* rev_string("") = ""
-* rev_string("a") = "a"
-* rev_string("go") = "og"
-* rev_string("hola") = "aloh"
-*)
 val rev_string = String.implode o List.rev o String.explode
 
-(* 
-* ('a -> 'b option) -> a' list -> 'b
-* Return v of SOME f(lst) or raise NoAnswer otherwise
-* first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] = ":P"
-* (first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"] handle
-* NoAnswer => ":P") = ":P"
-*)
 fun first_answer f lst =
     case lst of
 	 [] => raise NoAnswer
@@ -127,13 +61,6 @@ fun first_answer f lst =
 		       NONE => first_answer f xs
 		     | SOME v => v
 
-(*
-* (a' -> b' option) -> a' list -> b' list
-* ???
-* all_answers (fn e => if e > 3 then SOME [e] else NONE) [1, 2, 3] = NONE
-* all_answers (fn e => if e > 3 then SOME [e] else NONE) [5, 6] = SOME [5, 6]
-* all_answers (fn e => if e > 3 then SOME [e] else NONE) [] = SOME []
-*)
 fun all_answers f lst =
     let 
 	fun help(lst, acc) =
@@ -144,51 +71,13 @@ fun all_answers f lst =
 			| SOME v => help(xs, acc @ v)
     in help(lst, []) end
 
-
-(*
-* pattern -> int
-* Count how many Wildcard there are in pattern p
-* count_wildcards Wildcard = 1 
-* count_wildcards (Variable "hola") = 0
-* count_wildcards UnitP = 0
-* count_wildcards (ConstP 23) = 0
-* count_wildcards (TupleP [(Variable "hola"), UnitP]) = 0
-* count_wildcards (TupleP [(Variable "hola"), Wildcard]) = 1
-* count_wildcards (ConstructorP (":P", ConstP 3)) = 0
-* count_wildcards (ConstructorP (":P", Wildcard)) = 1
-*)
 val count_wildcards = g (fn _ => 1) (fn _ => 0)
 
-(*
-* pattern -> int
-* Count how many Wildcard there are plus the length of all strings s in Variable s of p
-* count_wild_and_variable_lengths (TupleP [Variable "hola", ConstP 23, Wildcard,
-*   ConstructorP ("P:", TupleP [Variable ":x", Wildcard, Wildcard])]) = 9
-* count_wild_and_variable_lengths (Variable "Pero bueno...") = 13
-* count_wild_and_variable_lengths Wildcard = 1
-* count_wild_and_variable_lengths (ConstP 234) = 0
-*)
 val count_wild_and_variable_lengths = g (fn _ => 1) (fn s => String.size s)
 
-(*
-* Count how many times string s appears in p as Variable s
-* count_some_var (":P", Wildcard) = 0
-* count_some_var ("s", Variable ":P") = 0
-* count_some_var ("o.O", TupleP [Variable "o.O", Variable "o.O", Wildcard,
-* ConstP 3, ConstructorP ("o.O", TupleP [Variable "o.O", Wildcard])]) = 3
-*)
 fun count_some_var(s, p) = 
     g (fn _ => 0) (fn e => if e = s then 1 else 0) p
 
-(*
-* Check if all strings s in Variable s are different for p
-* check_pat (Variable ":O") = true
-* check_pat Wildcard = true
-* check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21,
-* Constructor ("S: > :P", TupleP [Variable ":S", Variable ";)", Wildcard])]) = true
-* check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21,
-* Constructor ("S: > :P", TupleP [Variable "S:", Variable ";)", Wildcard])]) = false
-*)
 fun check_pat p =
     let 
 	fun get_vars p =
@@ -204,3 +93,18 @@ fun check_pat p =
 			   then false
 			   else check_repeats xs
     in (check_repeats o get_vars) p end
+
+fun match arg =
+    case arg of
+	 (_, Wildcard) => SOME []
+       | (v, Variable s) => SOME[(s, v)]
+       | (Const a, ConstP b) => if a = b then SOME [] else NONE
+       | (Unit, UnitP) => SOME []
+       | (Tuple l, TupleP l') => all_answers match (ListPair.zipEq(l, l') handle UnequalLengths => [(Unit,ConstP 0)])
+       | (Constructor(s, v),ConstructorP(s',p)) => if s = s' 
+						   then match(v, p)
+						   else NONE
+       | _ => NONE
+
+fun first_match(v, ps) =
+    (SOME (first_answer (fn e => match(v, e)) ps)) handle NoAnswer => NONE

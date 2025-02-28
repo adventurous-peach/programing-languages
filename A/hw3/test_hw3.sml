@@ -39,7 +39,7 @@ val t25 = (first_answer (fn e => if e = "a" then SOME ":P" else NONE) ["e", "a"]
     handle NoAnswer => ":P") = ":P"
 
 
-val t26 = all_answers (fn e => if e > 3 then SOME [e] else NONE) [1, 2, 3] = NONE
+val t26 = all_answers (fn e => if e > 2 then SOME [e] else NONE) [1, 2, 3] = NONE
 val t27 = all_answers (fn e => if e > 3 then SOME [e] else NONE) [5, 6] = SOME [5, 6]
 val t28 = all_answers (fn e => if e > 3 then SOME [e] else NONE) [] = SOME []
 
@@ -63,11 +63,25 @@ val t42 = count_some_var ("s", Variable ":P") = 0
 val t43 = count_some_var ("o.O", TupleP [Variable "o.O", Variable "o.O", Wildcard, 
     ConstP 3, ConstructorP ("o.O", TupleP [Variable "o.O", Wildcard])]) = 3
 
-(*
 val t44 = check_pat (Variable ":O") = true
 val t45 = check_pat Wildcard = true
 val t46 = check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21, 
-    Constructor ("S: > :P", TupleP [Variable ":S", Variable ";)", Wildcard])]) = true
+    ConstructorP ("S: > :P", TupleP [Variable ":S", Variable ";)", Wildcard])]) = true
 val t47 = check_pat (TupleP [Variable ":x", Variable "S:", Wildcard, ConstP 21, 
-    Constructor ("S: > :P", TupleP [Variable "S:", Variable ";)", Wildcard])]) = false
-*)
+    ConstructorP ("S: > :P", TupleP [Variable "S:", Variable ";)", Wildcard])]) = false
+
+val t48 = match(Unit, ConstP 23) = NONE
+val t49 = match(Tuple [Unit, Constructor (";", Const 2)], Variable ":P") = SOME [(":P", Tuple [Unit, Constructor (";", Const 2)])]
+val t50 = match(Const 32, ConstP 24) = NONE
+val t51 = match(Const 34, ConstP 34) = SOME []
+val t52 = match(Unit, UnitP) = SOME []
+val t53 = match(Unit, ConstP 34) = NONE
+val t54 = match(Tuple [Unit, Unit], TupleP [Variable "S", Wildcard]) = SOME [("S",Unit)]
+val t55 = match(Tuple [Const 2], TupleP [Variable "S", Wildcard]) = NONE
+
+val t56 = first_match(Tuple [Unit, Constructor (";", Const 2)], [Variable ":P"]) = SOME [(":P", Tuple [Unit, Constructor (";", Const 2)])]
+val t57 = first_match(Const 34, [Wildcard, ConstP 34]) = SOME []
+val t58 = first_match(Unit, [Variable "s", UnitP]) = SOME [("s", Unit)]
+val t59 = first_match(Tuple [Unit], [ConstP 2, ConstP 3]) = NONE
+val t60 = first_match(Tuple [Const 2, Unit], [Variable "S", Wildcard]) = SOME [("S",Tuple [Const 2, Unit])]
+val t61 = first_match(Unit, [ConstP 23, ConstP 4]) = NONE
