@@ -64,5 +64,5 @@
                                                              (if (= (add1 i) l-length) 0 (set! i (add1 i)))
                                                              ans)
                                                        #f)))])
-    (lambda (v) (let ([cached-ans (vector-assoc v (list->vector l))])
+    (lambda (v) (let ([cached-ans (vector-assoc v cache)])
                   (if cached-ans cached-ans (look-up-and-update-cache v))))))
