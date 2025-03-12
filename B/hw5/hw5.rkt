@@ -65,12 +65,18 @@
                             (if (> (int-num e1) (int-num e2))
                                 (ifgreater-e3 e) (ifgreater-e4 e))
                             (error (format "bad MUPL expression: expecting e1 and e2 to be of type int. Given: ~v and ~v" e1 e2))))]
+
+        ;(struct mlet (var e body) #:transparent) ;; a local binding (let var = e in body)
+        [(mlet? e) (let ([v (eval-under-env (mlet-e e) env)])
+                       (eval-under-env (mlet-body e) (append env (list (cons (mlet-var e) v)))))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 (check-equal? (eval-under-env (ifgreater (int 1) (int 2) "Y" "N") '()) "N")
 (check-equal? (eval-under-env (ifgreater (int 3) (int 2) "Y" "N") '()) "Y")
 (check-equal? (eval-under-env (ifgreater (var "a") (int 2) "Y" "N") (list (cons "a" (int 1)))) "N")
-(check-equal? (eval-under-env (ifgreater (var "a") (int 2) "Y" "N") (list (cons "a" (int 3)) (cons "b" (int 2)))) "Y")
+(check-equal? (eval-under-env (ifgreater (var "a") (var "b") "Y" "N") (list (cons "a" (int 3)) (cons "b" (int 2)))) "Y")
+(check-equal? (eval-under-env (mlet "a" (int 1) (ifgreater (var "a") (int 2) "Y" "N")) '()) "N")
+(check-equal? (eval-under-env (mlet "b" (int 2) (ifgreater (var "a") (int 2) "Y" "N")) (list (cons "a" (int 3)))) "Y")
 
 ;; Do NOT change
 (define (eval-exp e)
