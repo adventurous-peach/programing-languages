@@ -65,10 +65,16 @@
                             (if (> (int-num e1) (int-num e2))
                                 (ifgreater-e3 e) (ifgreater-e4 e))
                             (error (format "bad MUPL expression: expecting e1 and e2 to be of type int. Given: ~v and ~v" e1 e2))))]
-
-        ;(struct mlet (var e body) #:transparent) ;; a local binding (let var = e in body)
         [(mlet? e) (let ([v (eval-under-env (mlet-e e) env)])
-                       (eval-under-env (mlet-body e) (append env (list (cons (mlet-var e) v)))))]
+                       (eval-under-env (mlet-body e)
+                                       (let* ([var-name (mlet-var e)]
+                                              [prev-binding (assoc var-name env)])
+                                         (if prev-binding
+                                             (list-set env (index-of env prev-binding) (cons var-name v))
+                                             (append env (list (cons var-name v)))))))]
+        [(apair? e) (let ([e1 (eval-under-env (apair-e1 e) env)]
+                          [e2 (eval-under-env (apair-e2 e) env)])
+                      (apair e1 e2))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 (check-equal? (eval-under-env (ifgreater (int 1) (int 2) "Y" "N") '()) "N")
@@ -76,7 +82,15 @@
 (check-equal? (eval-under-env (ifgreater (var "a") (int 2) "Y" "N") (list (cons "a" (int 1)))) "N")
 (check-equal? (eval-under-env (ifgreater (var "a") (var "b") "Y" "N") (list (cons "a" (int 3)) (cons "b" (int 2)))) "Y")
 (check-equal? (eval-under-env (mlet "a" (int 1) (ifgreater (var "a") (int 2) "Y" "N")) '()) "N")
-(check-equal? (eval-under-env (mlet "b" (int 2) (ifgreater (var "a") (int 2) "Y" "N")) (list (cons "a" (int 3)))) "Y")
+(check-equal? (eval-under-env (mlet "a" (int 1) (ifgreater (var "a") (int 2) "Y" "N")) (list (cons "a" (int 4)))) "N")
+(check-equal? (eval-under-env (mlet "b" (int 2) (ifgreater (var "a") (var "b") "Y" "N")) (list (cons "a" (int 3)))) "Y")
+(check-equal? (eval-under-env (apair (int 1) (int 2)) '()) (apair (int 1) (int 2)))
+(check-equal? (eval-under-env (apair (ifgreater (int 1) (int 2) "Y" "N") (ifgreater (int 3) (int 2) "Y" "N")) '())
+              (apair "N" "Y"))
+(check-equal? (eval-under-env (apair (mlet "a" (int 1) (ifgreater (var "a") (int 2) "Y" "N"))
+                                     (mlet "b" (int 2) (ifgreater (var "a") (var "b") "Y" "N")))
+                              (list (cons "a" (int 3))))
+              (apair "N" "Y"))
 
 ;; Do NOT change
 (define (eval-exp e)
