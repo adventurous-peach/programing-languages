@@ -81,6 +81,8 @@
         [(snd? e) (let ([mupl-exp (eval-under-env (snd-e e) env)])
                     (if (apair? mupl-exp) (apair-e2 mupl-exp)
                         (error (format "bad MUPL expression: expecting e to be of type apair. Given: ~v" mupl-exp))))]
+        [(isaunit? e) (let ([mupl-exp (eval-under-env (isaunit-e e) env)])
+                        (int (if (aunit? mupl-exp) 1 0)))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 (check-equal? (eval-under-env (ifgreater (int 1) (int 2) "Y" "N") '()) "N")
@@ -99,6 +101,8 @@
               (apair "N" "Y"))
 (check-equal? (eval-under-env (fst (apair (var "4") (int 2))) (list (cons "4" (int 35)))) (int 35))
 (check-equal? (eval-under-env (snd (apair (int 2) (var "4"))) (list (cons "4" (int 35)))) (int 35))
+(check-equal? (eval-under-env (isaunit (aunit)) '()) (int 1))
+(check-equal? (eval-under-env (isaunit (fst (apair (var "4") (int 2)))) (list (cons "4" (int 35)))) (int 0))
 
 ;; Do NOT change
 (define (eval-exp e)
