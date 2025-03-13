@@ -83,31 +83,21 @@
                         (error (format "bad MUPL expression: expecting e to be of type apair. Given: ~v" mupl-exp))))]
         [(isaunit? e) (let ([mupl-exp (eval-under-env (isaunit-e e) env)])
                         (int (if (aunit? mupl-exp) 1 0)))]
-
-        ;; (struct fun  (nameopt formal body)
-        ;; (struct closure (env fun)
         [(fun? e) (closure env e)]
+        [(call? e) (let ([funexp (eval-under-env (call-funexp e) env)]
+                         [actual (eval-under-env (call-actual e) env)])
+                     (if (not (closure? funexp))
+                         (error (format "bad MUPL expression: expecting funexp to be of type closure. Given: ~v" funexp))
+                         (let* ([fn (closure-fun e)]
+                                [fn-name (fun-nameopt fn)]
+                                [fn-parameter (fun-formal fn)])
+                           (eval-under-env (fun-body fn)
+                                           (if fn-name
+                                             (append (closure-env e)
+                                                     (list (cons fn-name fn))
+                                                     (list (cons fn-parameter actual)))
+                                             (append (closure-env e) (list (cons fn-parameter actual))))))))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
-
-(check-equal? (eval-under-env (ifgreater (int 1) (int 2) "Y" "N") '()) "N")
-(check-equal? (eval-under-env (ifgreater (int 3) (int 2) "Y" "N") '()) "Y")
-(check-equal? (eval-under-env (ifgreater (var "a") (int 2) "Y" "N") (list (cons "a" (int 1)))) "N")
-(check-equal? (eval-under-env (ifgreater (var "a") (var "b") "Y" "N") (list (cons "a" (int 3)) (cons "b" (int 2)))) "Y")
-(check-equal? (eval-under-env (mlet "a" (int 1) (ifgreater (var "a") (int 2) "Y" "N")) '()) "N")
-(check-equal? (eval-under-env (mlet "a" (int 1) (ifgreater (var "a") (int 2) "Y" "N")) (list (cons "a" (int 4)))) "N")
-(check-equal? (eval-under-env (mlet "b" (int 2) (ifgreater (var "a") (var "b") "Y" "N")) (list (cons "a" (int 3)))) "Y")
-(check-equal? (eval-under-env (apair (int 1) (int 2)) '()) (apair (int 1) (int 2)))
-(check-equal? (eval-under-env (apair (ifgreater (int 1) (int 2) "Y" "N") (ifgreater (int 3) (int 2) "Y" "N")) '())
-              (apair "N" "Y"))
-(check-equal? (eval-under-env (apair (mlet "a" (int 1) (ifgreater (var "a") (int 2) "Y" "N"))
-                                     (mlet "b" (int 2) (ifgreater (var "a") (var "b") "Y" "N")))
-                              (list (cons "a" (int 3))))
-              (apair "N" "Y"))
-(check-equal? (eval-under-env (fst (apair (var "4") (int 2))) (list (cons "4" (int 35)))) (int 35))
-(check-equal? (eval-under-env (snd (apair (int 2) (var "4"))) (list (cons "4" (int 35)))) (int 35))
-(check-equal? (eval-under-env (isaunit (aunit)) '()) (int 1))
-(check-equal? (eval-under-env (isaunit (fst (apair (var "4") (int 2)))) (list (cons "4" (int 35)))) (int 0))
-(check-equal? (eval-under-env (fun (int 2) (int 2) (aunit)) '()) (closure '() (fun (int 2) (int 2) (aunit))))
 
 ;; Do NOT change
 (define (eval-exp e)
@@ -115,11 +105,24 @@
         
 ;; Problem 3
 
-(define (ifaunit e1 e2 e3) "CHANGE")
+(define (ifaunit e1 e2 e3)
+  (if (equal? (int 1) (eval-under-env (isaunit e1) '())) (eval-under-env e2 '()) (eval-under-env e3 '())))
 
-(define (mlet* lstlst e2) "CHANGE")
+(define (mlet* lstlst e2)
+  (letrec ([helper-fn (lambda(l) (cond
+                                   [(empty? l) '()]
+                                   [else (cons (helper-fn (cdr l))
+                                               (cons (car (car l)) (eval-under-env (cdr (car l)) '())))]))])
+    (eval-under-env e2 (helper-fn lstlst))))
 
-(define (ifeq e1 e2 e3 e4) "CHANGE")
+(define (ifeq e1 e2 e3 e4)
+  (let ([e1 (eval-under-env e1 '())]
+        [e2 (eval-under-env e2 '())])
+    (if (and (int? e1) (int? e2))
+        (if (= (int-num e1) (int-num e2))
+            (eval-under-env e3 '())
+            (eval-under-env e4 '()))
+        (error (format "bad MUPL expression: expecting e1 and e2 to be of type int. Given: ~v and ~v" e1 e2)))))
 
 ;; Problem 4
 
